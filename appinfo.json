@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "sylviakosowski@gmail.com",
+    "longName": "Assignment-13",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "shortName": "Assignment-13",
+    "uuid": "530d517e-07fb-4452-9f67-bd27eb80cc15",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
