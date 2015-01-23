@@ -22,6 +22,10 @@ static void update_time() {
 
   // Display this time on the TextLayer
   text_layer_set_text(s_time_layer, buffer);
+  
+  if(tick_time->tm_min % 2 == 0) {
+    //vibes_short_pulse();
+  }
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
