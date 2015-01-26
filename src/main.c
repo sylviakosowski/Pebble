@@ -1,13 +1,17 @@
 #include <pebble.h>
 
 static Window *s_main_window;
-static TextLayer *s_time_layer;
+//static TextLayer *s_time_layer;
+
+static BitmapLayer *s_image_layer;
+static GBitmap *default_sad;
 
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
 
+  /*
   // Create a long-lived buffer
   static char buffer[] = "00:00";
 
@@ -18,10 +22,10 @@ static void update_time() {
   } else {
     // Use 12 hour format
     strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
-  }
+  }*/
 
   // Display this time on the TextLayer
-  text_layer_set_text(s_time_layer, buffer);
+  //text_layer_set_text(s_time_layer, buffer);
   
   if(tick_time->tm_min % 2 == 0) {
     //vibes_short_pulse();
@@ -33,6 +37,13 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 }
 
 static void main_window_load(Window *window) {
+  
+  default_sad = gbitmap_create_with_resource(RESOURCE_ID_DEFAULT_SAD);
+  s_image_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
+  bitmap_layer_set_bitmap(s_image_layer, default_sad);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_image_layer));
+  
+  /*
   //Create time TextLayer
   s_time_layer = text_layer_create(GRect(0, 55, 144, 50));
   text_layer_set_background_color(s_time_layer, GColorClear);
@@ -44,11 +55,18 @@ static void main_window_load(Window *window) {
 
   //Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
+  */
 }
 
 static void main_window_unload(Window *window) {
     //Destroy TextLayer
-    text_layer_destroy(s_time_layer);
+    //text_layer_destroy(s_time_layer);
+  
+  // Destroy GBitmap
+  gbitmap_destroy(default_sad);
+
+  // Destroy BitmapLayer
+  bitmap_layer_destroy(s_image_layer);
 }
 
 static void init() {

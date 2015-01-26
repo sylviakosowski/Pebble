@@ -7,7 +7,43 @@
     "longName": "Assignment-13",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/loveme.png",
+                "name": "LOVE_ME",
+                "type": "png"
+            },
+            {
+                "file": "images/tellmestory.png",
+                "name": "TELL_ME_STORY",
+                "type": "png"
+            },
+            {
+                "file": "images/wannaplay.png",
+                "name": "WANNA_PLAY",
+                "type": "png"
+            },
+            {
+                "file": "images/hugme.png",
+                "name": "HUG_ME",
+                "type": "png"
+            },
+            {
+                "file": "images/feedme.png",
+                "name": "FEED_ME",
+                "type": "png"
+            },
+            {
+                "file": "images/defaultsad.png",
+                "name": "DEFAULT_SAD",
+                "type": "png"
+            },
+            {
+                "file": "images/bestfriend.png",
+                "name": "BEST_FRIEND",
+                "type": "png"
+            }
+        ]
     },
     "shortName": "Assignment-13",
     "uuid": "530d517e-07fb-4452-9f67-bd27eb80cc15",
