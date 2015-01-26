@@ -1,69 +1,65 @@
 #include <pebble.h>
 
 static Window *s_main_window;
-//static TextLayer *s_time_layer;
 
 static BitmapLayer *s_image_layer;
-static GBitmap *default_sad;
+static GBitmap *defaultsad;
+static GBitmap *bestfriend;
+static GBitmap *feedme;
+static GBitmap *hugme;
+static GBitmap *loveme;
+static GBitmap *tellmestory;
+static GBitmap *wannaplay;
+
+static GBitmap * currentImage;
 
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
-
-  /*
-  // Create a long-lived buffer
-  static char buffer[] = "00:00";
-
-  // Write the current hours and minutes into the buffer
-  if(clock_is_24h_style() == true) {
-    // Use 24 hour format
-    strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
-  } else {
-    // Use 12 hour format
-    strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
-  }*/
-
-  // Display this time on the TextLayer
-  //text_layer_set_text(s_time_layer, buffer);
   
-  if(tick_time->tm_min % 2 == 0) {
-    //vibes_short_pulse();
+  if(tick_time->tm_sec == 0) {
+    vibes_short_pulse();
+    bitmap_layer_set_bitmap(s_image_layer, hugme);
   }
+  
+  /*
+  if(tick_time->tm_sec % 60 == 0) {
+    //Every minute, make it vibrate
+    vibes_short_pulse();
+    //currentImage = gbitmap_create_with_resource(RESOURCE_ID_HUG_ME);
+    //s_image_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
+    bitmap_layer_set_bitmap(s_image_layer, hugme);
+  } else {
+    //currentImage = gbitmap_create_with_resource(RESOURCE_ID_DEFAULT_SAD);
+  }*/
 }
 
+//Handles the time
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
 }
 
+//Handles accelerometer stuff
+static void tap_handler(AccelAxisType axis, int32_t direction) {
+
+}
+
 static void main_window_load(Window *window) {
   
-  default_sad = gbitmap_create_with_resource(RESOURCE_ID_DEFAULT_SAD);
-  s_image_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
-  bitmap_layer_set_bitmap(s_image_layer, default_sad);
-  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_image_layer));
+  currentImage = gbitmap_create_with_resource(RESOURCE_ID_DEFAULT_SAD);
+  hugme = gbitmap_create_with_resource(RESOURCE_ID_HUG_ME);
   
-  /*
-  //Create time TextLayer
-  s_time_layer = text_layer_create(GRect(0, 55, 144, 50));
-  text_layer_set_background_color(s_time_layer, GColorClear);
-  text_layer_set_text_color(s_time_layer, GColorBlack);
+  s_image_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
+  bitmap_layer_set_bitmap(s_image_layer, currentImage);
+  layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_image_layer));
 
-  //Improve the layout to be more like a watchface
-  text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
-  text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
-
-  //Add it as a child layer to the Window's root layer
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
-  */
 }
 
 static void main_window_unload(Window *window) {
-    //Destroy TextLayer
-    //text_layer_destroy(s_time_layer);
   
   // Destroy GBitmap
-  gbitmap_destroy(default_sad);
+  gbitmap_destroy(currentImage);
 
   // Destroy BitmapLayer
   bitmap_layer_destroy(s_image_layer);
@@ -72,6 +68,8 @@ static void main_window_unload(Window *window) {
 static void init() {
   //Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  //Register with Accelerometer tap event service
+  accel_tap_service_subscribe(tap_handler);
   
   //Create main Window element and assign to pointer
   s_main_window = window_create();
