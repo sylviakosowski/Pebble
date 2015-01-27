@@ -10,6 +10,8 @@ static GBitmap *loveMe;
 static GBitmap *tellMeStory;
 static GBitmap *playWithMe;
 
+bool isDemanding;
+
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
@@ -18,18 +20,23 @@ static void update_time() {
   if(tick_time->tm_min == 0) {
     vibes_long_pulse();
     bitmap_layer_set_bitmap(s_image_layer, loveMe);
+    isDemanding = true;
   } else if(tick_time->tm_min == 15) {
     vibes_long_pulse();
     bitmap_layer_set_bitmap(s_image_layer, hugMe);
+    isDemanding = true;
   } else if(tick_time->tm_min == 30) {
     vibes_long_pulse();
     bitmap_layer_set_bitmap(s_image_layer, tellMeStory);
+    isDemanding = true;
   } else if(tick_time->tm_min == 45) {
     vibes_long_pulse();
     bitmap_layer_set_bitmap(s_image_layer, feedMe);
+    isDemanding = true;
   } else if(tick_time->tm_sec == 0) {
     vibes_short_pulse();
     bitmap_layer_set_bitmap(s_image_layer, playWithMe);
+    isDemanding = true;
   }
   
 }
@@ -41,7 +48,36 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
 
 //Handles accelerometer stuff
 static void tap_handler(AccelAxisType axis, int32_t direction) {
-
+  if(isDemanding) {
+    if(direction != 0) {
+      isDemanding = false;
+      bitmap_layer_set_bitmap(s_image_layer, bestFriend);
+    }
+  }
+   /*
+  switch (axis) {
+  case ACCEL_AXIS_X:
+    if (direction > 0) {
+      APP_LOG(APP_LOG_LEVEL_INFO, "X axis positive.");
+    } else {
+      APP_LOG(APP_LOG_LEVEL_INFO, "X axis negative.");
+    }
+    break;
+  case ACCEL_AXIS_Y:
+    if (direction > 0) {
+      APP_LOG(APP_LOG_LEVEL_INFO, "Y axis positive.");
+    } else {
+      APP_LOG(APP_LOG_LEVEL_INFO, "Y axis negative.");
+    }
+    break;
+  case ACCEL_AXIS_Z:
+    if (direction > 0) {
+      APP_LOG(APP_LOG_LEVEL_INFO, "Z axis positive.");
+    } else {
+      APP_LOG(APP_LOG_LEVEL_INFO, "Z axis negative.");
+    }
+    break;
+  }*/ 
 }
 
 static void main_window_load(Window *window) {
@@ -74,6 +110,8 @@ static void main_window_unload(Window *window) {
 }
 
 static void init() {
+  isDemanding = false;
+  
   //Register with TickTimerService
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   //Register with Accelerometer tap event service
