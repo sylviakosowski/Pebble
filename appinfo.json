@@ -9,6 +9,16 @@
     "resources": {
         "media": [
             {
+                "file": "images/play_with_me.png",
+                "name": "PLAY_WITH_ME",
+                "type": "png"
+            },
+            {
+                "file": "images/wannaplay.png",
+                "name": "WANT_PLAY",
+                "type": "png"
+            },
+            {
                 "file": "images/loveme.png",
                 "name": "LOVE_ME",
                 "type": "png"
@@ -16,11 +26,6 @@
             {
                 "file": "images/tellmestory.png",
                 "name": "TELL_ME_STORY",
-                "type": "png"
-            },
-            {
-                "file": "images/wannaplay.png",
-                "name": "WANNA_PLAY",
                 "type": "png"
             },
             {

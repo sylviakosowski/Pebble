@@ -3,36 +3,35 @@
 static Window *s_main_window;
 
 static BitmapLayer *s_image_layer;
-static GBitmap *defaultsad;
-static GBitmap *bestfriend;
-static GBitmap *feedme;
-static GBitmap *hugme;
-static GBitmap *loveme;
-static GBitmap *tellmestory;
-static GBitmap *wannaplay;
-
-static GBitmap * currentImage;
+static GBitmap *bestFriend;
+static GBitmap *feedMe;
+static GBitmap *hugMe;
+static GBitmap *loveMe;
+static GBitmap *tellMeStory;
+static GBitmap *playWithMe;
 
 static void update_time() {
   // Get a tm structure
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
   
-  if(tick_time->tm_sec == 0) {
+  if(tick_time->tm_min == 0) {
+    vibes_long_pulse();
+    bitmap_layer_set_bitmap(s_image_layer, loveMe);
+  } else if(tick_time->tm_min == 15) {
+    vibes_long_pulse();
+    bitmap_layer_set_bitmap(s_image_layer, hugMe);
+  } else if(tick_time->tm_min == 30) {
+    vibes_long_pulse();
+    bitmap_layer_set_bitmap(s_image_layer, tellMeStory);
+  } else if(tick_time->tm_min == 45) {
+    vibes_long_pulse();
+    bitmap_layer_set_bitmap(s_image_layer, feedMe);
+  } else if(tick_time->tm_sec == 0) {
     vibes_short_pulse();
-    bitmap_layer_set_bitmap(s_image_layer, hugme);
+    bitmap_layer_set_bitmap(s_image_layer, playWithMe);
   }
   
-  /*
-  if(tick_time->tm_sec % 60 == 0) {
-    //Every minute, make it vibrate
-    vibes_short_pulse();
-    //currentImage = gbitmap_create_with_resource(RESOURCE_ID_HUG_ME);
-    //s_image_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
-    bitmap_layer_set_bitmap(s_image_layer, hugme);
-  } else {
-    //currentImage = gbitmap_create_with_resource(RESOURCE_ID_DEFAULT_SAD);
-  }*/
 }
 
 //Handles the time
@@ -47,20 +46,29 @@ static void tap_handler(AccelAxisType axis, int32_t direction) {
 
 static void main_window_load(Window *window) {
   
-  currentImage = gbitmap_create_with_resource(RESOURCE_ID_DEFAULT_SAD);
-  hugme = gbitmap_create_with_resource(RESOURCE_ID_HUG_ME);
+  bestFriend = gbitmap_create_with_resource(RESOURCE_ID_BEST_FRIEND);
+  feedMe = gbitmap_create_with_resource(RESOURCE_ID_FEED_ME);
+  hugMe = gbitmap_create_with_resource(RESOURCE_ID_HUG_ME);
+  loveMe = gbitmap_create_with_resource(RESOURCE_ID_LOVE_ME);
+  tellMeStory = gbitmap_create_with_resource(RESOURCE_ID_TELL_ME_STORY);
+  playWithMe =  gbitmap_create_with_resource(RESOURCE_ID_PLAY_WITH_ME);
   
   s_image_layer = bitmap_layer_create(GRect(0, 0, 144, 168));
-  bitmap_layer_set_bitmap(s_image_layer, currentImage);
+  bitmap_layer_set_bitmap(s_image_layer, bestFriend);
   layer_add_child(window_get_root_layer(window), bitmap_layer_get_layer(s_image_layer));
 
 }
 
 static void main_window_unload(Window *window) {
   
-  // Destroy GBitmap
-  gbitmap_destroy(currentImage);
-
+  // Destroy GBitmaps
+  gbitmap_destroy(bestFriend);
+  gbitmap_destroy(feedMe);
+  gbitmap_destroy(hugMe);
+  gbitmap_destroy(loveMe);
+  gbitmap_destroy(tellMeStory);
+  gbitmap_destroy(playWithMe);
+  
   // Destroy BitmapLayer
   bitmap_layer_destroy(s_image_layer);
 }
