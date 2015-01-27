@@ -17,6 +17,7 @@ static void update_time() {
   time_t temp = time(NULL); 
   struct tm *tick_time = localtime(&temp);
   
+  
   if(tick_time->tm_min == 0) {
     vibes_long_pulse();
     bitmap_layer_set_bitmap(s_image_layer, loveMe);
@@ -54,30 +55,6 @@ static void tap_handler(AccelAxisType axis, int32_t direction) {
       bitmap_layer_set_bitmap(s_image_layer, bestFriend);
     }
   }
-   /*
-  switch (axis) {
-  case ACCEL_AXIS_X:
-    if (direction > 0) {
-      APP_LOG(APP_LOG_LEVEL_INFO, "X axis positive.");
-    } else {
-      APP_LOG(APP_LOG_LEVEL_INFO, "X axis negative.");
-    }
-    break;
-  case ACCEL_AXIS_Y:
-    if (direction > 0) {
-      APP_LOG(APP_LOG_LEVEL_INFO, "Y axis positive.");
-    } else {
-      APP_LOG(APP_LOG_LEVEL_INFO, "Y axis negative.");
-    }
-    break;
-  case ACCEL_AXIS_Z:
-    if (direction > 0) {
-      APP_LOG(APP_LOG_LEVEL_INFO, "Z axis positive.");
-    } else {
-      APP_LOG(APP_LOG_LEVEL_INFO, "Z axis negative.");
-    }
-    break;
-  }*/ 
 }
 
 static void main_window_load(Window *window) {
